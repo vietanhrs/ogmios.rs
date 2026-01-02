@@ -5,9 +5,9 @@ use crate::error::Result;
 use crate::schema::{
     Address, BlockHeight, Constitution, Epoch, EraStart, EraSummary, EraWithGenesis,
     GenesisConfiguration, GovernanceProposalState, LiveStakeDistributionEntry, Point,
-    ProjectedRewards, ProtocolParameters, RewardAccount, RewardAccountSummary, Slot,
-    StakeAddress, StakePool, StakePoolId, StakePoolPerformance, StakePoolView, Tip,
-    TransactionOutputReference, UtcTime, Utxo,
+    ProjectedRewards, ProtocolParameters, RewardAccount, RewardAccountSummary, Slot, StakeAddress,
+    StakePoolId, StakePoolPerformance, StakePoolView, Tip, TransactionOutputReference, UtcTime,
+    Utxo,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -51,7 +51,9 @@ pub async fn release_ledger_state(context: &InteractionContext) -> Result<()> {
 
 /// Query the current constitution.
 pub async fn constitution(context: &InteractionContext) -> Result<Constitution> {
-    context.request("queryLedgerState/constitution", None::<()>).await
+    context
+        .request("queryLedgerState/constitution", None::<()>)
+        .await
 }
 
 /// Query the current epoch.
@@ -61,12 +63,16 @@ pub async fn epoch(context: &InteractionContext) -> Result<Epoch> {
 
 /// Query the era start information.
 pub async fn era_start(context: &InteractionContext) -> Result<EraStart> {
-    context.request("queryLedgerState/eraStart", None::<()>).await
+    context
+        .request("queryLedgerState/eraStart", None::<()>)
+        .await
 }
 
 /// Query era summaries.
 pub async fn era_summaries(context: &InteractionContext) -> Result<Vec<EraSummary>> {
-    context.request("queryLedgerState/eraSummaries", None::<()>).await
+    context
+        .request("queryLedgerState/eraSummaries", None::<()>)
+        .await
 }
 
 /// Query genesis configuration for a specific era.
@@ -80,7 +86,10 @@ pub async fn genesis_configuration(
     }
 
     context
-        .request("queryLedgerState/genesisConfiguration", Some(Params { era }))
+        .request(
+            "queryLedgerState/genesisConfiguration",
+            Some(Params { era }),
+        )
         .await
 }
 
@@ -118,7 +127,9 @@ pub async fn network_tip(context: &InteractionContext) -> Result<Tip> {
 
 /// Query the network block height.
 pub async fn network_block_height(context: &InteractionContext) -> Result<BlockHeight> {
-    context.request("queryNetwork/blockHeight", None::<()>).await
+    context
+        .request("queryNetwork/blockHeight", None::<()>)
+        .await
 }
 
 /// Query live stake distribution.
@@ -206,7 +217,9 @@ pub async fn stake_pools(
         include_stake,
     };
 
-    context.request("queryLedgerState/stakePools", Some(params)).await
+    context
+        .request("queryLedgerState/stakePools", Some(params))
+        .await
 }
 
 /// Query stake pool performances.
@@ -231,10 +244,7 @@ pub struct UtxoFilter {
 }
 
 /// Query UTXOs.
-pub async fn utxo(
-    context: &InteractionContext,
-    filter: Option<UtxoFilter>,
-) -> Result<Vec<Utxo>> {
+pub async fn utxo(context: &InteractionContext, filter: Option<UtxoFilter>) -> Result<Vec<Utxo>> {
     context.request("queryLedgerState/utxo", filter).await
 }
 

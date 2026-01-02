@@ -1,10 +1,10 @@
 //! Transaction types for Cardano.
 
+use super::certificates::Certificate;
+use super::primitives::*;
+use super::scripts::{Datum, Redeemer, Script};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use super::primitives::*;
-use super::scripts::{Script, Datum, Redeemer};
-use super::certificates::Certificate;
 
 /// A Cardano transaction.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -104,7 +104,10 @@ pub struct TransactionOutputReference {
 
 impl TransactionOutputReference {
     pub fn new(id: impl Into<String>, index: u32) -> Self {
-        Self { id: id.into(), index }
+        Self {
+            id: id.into(),
+            index,
+        }
     }
 }
 

@@ -149,6 +149,8 @@ pub mod connection;
 pub mod error;
 pub mod ledger_state_query;
 pub mod mempool_monitoring;
+// TODO: Add documentation for the schema module
+#[allow(missing_docs)]
 pub mod schema;
 pub mod server_health;
 pub mod transaction_submission;
@@ -183,22 +185,43 @@ pub use transaction_submission::{
 
 // Re-export commonly used schema types
 pub use schema::{
-    // Blocks
-    Block, BlockBFT, BlockEBB, BlockPraos,
-    // Transactions
-    Transaction, TransactionId, TransactionInput, TransactionOutput, TransactionOutputReference,
-    Utxo,
     // Primitives
-    Address, Assets, BlockHeight, Epoch, Lovelace, Point, PolicyId, Slot, StakeAddress,
-    StakePoolId, Tip, Value,
+    Address,
+    Assets,
+    // Blocks
+    Block,
+    BlockBFT,
+    BlockEBB,
+    BlockHeight,
+    BlockPraos,
+    // Scripts
+    Datum,
+    Epoch,
     // Era
-    Era, EraSummary, EraWithGenesis,
+    Era,
+    EraSummary,
+    EraWithGenesis,
+    Lovelace,
+    // Network
+    Network,
+    Point,
+    PolicyId,
     // Protocol
     ProtocolParameters,
-    // Network
-    Network, ServerHealth,
-    // Scripts
-    Datum, Script,
+    Script,
+    ServerHealth,
+    Slot,
+    StakeAddress,
+    StakePoolId,
+    Tip,
+    // Transactions
+    Transaction,
+    TransactionId,
+    TransactionInput,
+    TransactionOutput,
+    TransactionOutputReference,
+    Utxo,
+    Value,
 };
 
 /// Prelude module for convenient imports.
@@ -216,15 +239,13 @@ pub mod prelude {
         InteractionContext, InteractionContextOptions, InteractionType,
     };
     pub use crate::error::{OgmiosError, Result};
-    pub use crate::ledger_state_query::{
-        create_ledger_state_query_client, LedgerStateQueryClient,
-    };
+    pub use crate::ledger_state_query::{create_ledger_state_query_client, LedgerStateQueryClient};
     pub use crate::mempool_monitoring::{
         create_mempool_monitoring_client, MempoolMonitoringClient,
     };
     pub use crate::schema::{
-        Address, Block, BlockHeight, Epoch, Lovelace, Point, Slot, Tip, Transaction,
-        TransactionId, Value,
+        Address, Block, BlockHeight, Epoch, Lovelace, Point, Slot, Tip, Transaction, TransactionId,
+        Value,
     };
     pub use crate::server_health::{ensure_server_health, get_server_health};
     pub use crate::transaction_submission::{
@@ -238,6 +259,7 @@ mod tests {
 
     #[test]
     fn test_prelude_imports() {
+        #[allow(unused_imports)]
         use crate::prelude::*;
         // Just verify the prelude compiles correctly
     }

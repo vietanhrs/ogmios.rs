@@ -12,7 +12,7 @@ use std::sync::Arc;
 use tokio::sync::{mpsc, oneshot, Mutex};
 use tokio_tungstenite::{
     connect_async,
-    tungstenite::{protocol::Message, handshake::client::Request},
+    tungstenite::{handshake::client::Request, protocol::Message},
     MaybeTlsStream, WebSocketStream,
 };
 use tracing::{debug, error, trace};
@@ -130,9 +130,7 @@ enum WsMessage {
         response_tx: oneshot::Sender<Result<String>>,
     },
     /// Send a message without waiting for response.
-    Send {
-        payload: String,
-    },
+    Send { payload: String },
     /// Close the connection.
     Close,
 }
@@ -181,11 +179,7 @@ impl InteractionContext {
         ensure_socket_is_open(self)?;
 
         let id = self.next_request_id();
-        let request = JsonRpcRequest::with_id(
-            method,
-            params,
-            serde_json::Value::Number(id.into()),
-        );
+        let request = JsonRpcRequest::with_id(method, params, serde_json::Value::Number(id.into()));
 
         let payload = serde_json::to_string(&request)?;
         trace!("Sending request: {}", payload);
@@ -207,7 +201,9 @@ impl InteractionContext {
 
         response
             .into_result()
-            .map_err(|e| OgmiosError::InvalidResponse { message: e.to_string() })
+            .map_err(|e| OgmiosError::InvalidResponse {
+                message: e.to_string(),
+            })
     }
 
     /// Send a JSON-RPC notification (no response expected).
@@ -289,11 +285,17 @@ pub async fn create_interaction_context(
     // Build WebSocket request
     let request = Request::builder()
         .uri(ws_url)
-        .header("Host", format!("{}:{}", options.connection.host, options.connection.port))
+        .header(
+            "Host",
+            format!("{}:{}", options.connection.host, options.connection.port),
+        )
         .header("Connection", "Upgrade")
         .header("Upgrade", "websocket")
         .header("Sec-WebSocket-Version", "13")
-        .header("Sec-WebSocket-Key", tokio_tungstenite::tungstenite::handshake::client::generate_key())
+        .header(
+            "Sec-WebSocket-Key",
+            tokio_tungstenite::tungstenite::handshake::client::generate_key(),
+        )
         .body(())
         .map_err(|e| OgmiosError::HttpHandshake(e.to_string()))?;
 
@@ -305,10 +307,7 @@ pub async fn create_interaction_context(
     let (tx, rx) = mpsc::channel::<WsMessage>(100);
     let is_open = std::sync::atomic::AtomicBool::new(true);
 
-    let ws_state = Arc::new(WebSocketState {
-        tx,
-        is_open,
-    });
+    let ws_state = Arc::new(WebSocketState { tx, is_open });
 
     let ws_state_clone = ws_state.clone();
     let error_handler = options.error_handler;
@@ -339,7 +338,8 @@ async fn handle_websocket(
     let (mut write, mut read) = ws_stream.split();
 
     // Pending requests waiting for responses
-    let pending: Arc<Mutex<Vec<oneshot::Sender<Result<String>>>>> = Arc::new(Mutex::new(Vec::new()));
+    let pending: Arc<Mutex<Vec<oneshot::Sender<Result<String>>>>> =
+        Arc::new(Mutex::new(Vec::new()));
     let pending_clone = pending.clone();
 
     // Spawn read task
@@ -357,7 +357,7 @@ async fn handle_websocket(
                     break;
                 }
                 Ok(Message::Ping(data)) => {
-                    trace!("Received ping");
+                    trace!("Received ping: {:?}", data);
                     // Pong is handled automatically by tungstenite
                 }
                 Ok(_) => {}
@@ -377,7 +377,10 @@ async fn handle_websocket(
     // Handle outgoing messages
     while let Some(msg) = rx.recv().await {
         match msg {
-            WsMessage::Request { payload, response_tx } => {
+            WsMessage::Request {
+                payload,
+                response_tx,
+            } => {
                 {
                     let mut pending = pending.lock().await;
                     pending.push(response_tx);

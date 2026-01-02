@@ -5,7 +5,7 @@ use crate::connection::{
     InteractionType,
 };
 use crate::error::Result;
-use crate::schema::{Block, Point, Tip, responses::NextBlockResponse};
+use crate::schema::{responses::NextBlockResponse, Block, Point, Tip};
 use std::sync::Arc;
 use tokio::sync::Mutex;
 use tracing::{debug, error, info, trace};
@@ -124,7 +124,7 @@ impl<H: ChainSynchronizationMessageHandlers + 'static> ChainSynchronizationClien
     pub async fn resume(
         &self,
         points: Option<Vec<Point>>,
-        in_flight: Option<u32>,
+        _in_flight: Option<u32>,
     ) -> Result<Intersection> {
         let points = points.unwrap_or_else(|| vec![Point::origin()]);
         let intersection = find_intersection(&self.context, points).await?;
@@ -135,7 +135,8 @@ impl<H: ChainSynchronizationMessageHandlers + 'static> ChainSynchronizationClien
         );
 
         // Start the sync loop
-        self.running.store(true, std::sync::atomic::Ordering::SeqCst);
+        self.running
+            .store(true, std::sync::atomic::Ordering::SeqCst);
 
         let context = self.context.clone();
         let handlers = self.handlers.clone();
@@ -154,7 +155,8 @@ impl<H: ChainSynchronizationMessageHandlers + 'static> ChainSynchronizationClien
 
     /// Shutdown the chain synchronization client.
     pub async fn shutdown(&self) -> Result<()> {
-        self.running.store(false, std::sync::atomic::Ordering::SeqCst);
+        self.running
+            .store(false, std::sync::atomic::Ordering::SeqCst);
         self.context.shutdown().await
     }
 }
@@ -219,7 +221,9 @@ async fn run_sync_loop<H: ChainSynchronizationMessageHandlers>(
 /// # Returns
 ///
 /// A new chain synchronization client.
-pub async fn create_chain_synchronization_client<H: ChainSynchronizationMessageHandlers + 'static>(
+pub async fn create_chain_synchronization_client<
+    H: ChainSynchronizationMessageHandlers + 'static,
+>(
     connection: ConnectionConfig,
     handlers: H,
     options: Option<ChainSynchronizationClientOptions>,
@@ -258,7 +262,8 @@ impl CollectingHandler {
 
     /// Check if the handler has reached the maximum block count.
     pub fn is_complete(&self) -> bool {
-        self.max_blocks.map_or(false, |max| self.blocks.len() >= max)
+        self.max_blocks
+            .map_or(false, |max| self.blocks.len() >= max)
     }
 }
 

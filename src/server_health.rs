@@ -3,7 +3,7 @@
 //! This module provides functions to check the health of an Ogmios server
 //! and verify it's ready to accept connections.
 
-use crate::connection::{Connection, ConnectionConfig, create_connection_object};
+use crate::connection::{create_connection_object, Connection, ConnectionConfig};
 use crate::error::{OgmiosError, Result};
 use crate::schema::ServerHealth;
 use tracing::debug;

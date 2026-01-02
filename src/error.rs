@@ -24,7 +24,9 @@ pub enum OgmiosError {
     /// Server not ready error
     #[error("Server not ready: network synchronization is {synchronization:.2}%, minimum required is {minimum:.2}%")]
     ServerNotReady {
+        /// Server health network synchronization
         synchronization: f64,
+        /// Synchronization minimum required
         minimum: f64,
     },
 
@@ -34,19 +36,31 @@ pub enum OgmiosError {
 
     /// Socket not open
     #[error("Socket is not open (state: {state})")]
-    SocketNotOpen { state: String },
+    SocketNotOpen {
+        /// Socket state
+        state: String,
+    },
 
     /// Invalid response from server
     #[error("Invalid response from server: {message}")]
-    InvalidResponse { message: String },
+    InvalidResponse {
+        /// Error message
+        message: String,
+    },
 
     /// Request timeout
     #[error("Request timed out after {timeout_ms}ms")]
-    Timeout { timeout_ms: u64 },
+    Timeout {
+        /// Timedout after (ms) value
+        timeout_ms: u64,
+    },
 
     /// Intersection not found during chain sync
     #[error("Intersection not found: {tip:?}")]
-    IntersectionNotFound { tip: Option<String> },
+    IntersectionNotFound {
+        /// Tip Or Origin, check the field Tip (object) and Origin (string) for more information
+        tip: Option<String>,
+    },
 
     /// Transaction submission error
     #[error("Transaction submission failed: {0}")]

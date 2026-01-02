@@ -155,7 +155,7 @@ fn size_of_value(value: &Value) -> u64 {
 
             // Multi-asset map
             size += size_of_array_def(assets.len() as u64);
-            for (policy_id, asset_map) in assets {
+            for (_policy_id, asset_map) in assets {
                 // Policy ID is 28 bytes (224 bits)
                 size += size_of_bytes_def(28);
                 // Asset name -> quantity map
@@ -206,9 +206,7 @@ fn size_of_script(script: &Script) -> u64 {
                 32
             }
         }
-        Script::PlutusV1 { cbor }
-        | Script::PlutusV2 { cbor }
-        | Script::PlutusV3 { cbor } => {
+        Script::PlutusV1 { cbor } | Script::PlutusV2 { cbor } | Script::PlutusV3 { cbor } => {
             // CBOR hex string
             size_of_bytes_def(cbor.len() as u64 / 2)
         }
