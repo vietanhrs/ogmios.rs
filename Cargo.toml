@@ -1,10 +1,13 @@
 [package]
 name = "ogmios-client"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 description = "Rust client/SDK for Cardano Ogmios"
 license = "MIT"
-repository = "https://github.com/your-org/ogmios.rs"
+repository = "https://github.com/vietanhrs/ogmios.rs"
+documentation = "https://docs.rs/ogmios-client"
+readme = "README.md"
+authors = ["vietanhrs"]
 keywords = ["cardano", "ogmios", "blockchain", "client", "sdk"]
 categories = ["api-bindings", "network-programming"]
 
