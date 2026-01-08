@@ -158,29 +158,29 @@ pub mod util;
 
 // Re-export main types at crate root for convenience
 pub use chain_synchronization::{
-    create_chain_synchronization_client, ChainSynchronizationClient,
-    ChainSynchronizationClientOptions, ChainSynchronizationMessageHandlers, Intersection,
+    ChainSynchronizationClient, ChainSynchronizationClientOptions,
+    ChainSynchronizationMessageHandlers, Intersection, create_chain_synchronization_client,
 };
 
 pub use connection::{
-    create_connection_object, create_interaction_context, Connection, ConnectionConfig,
-    InteractionContext, InteractionContextOptions, InteractionType,
+    Connection, ConnectionConfig, InteractionContext, InteractionContextOptions, InteractionType,
+    create_connection_object, create_interaction_context,
 };
 
 pub use error::{OgmiosError, Result};
 
 pub use ledger_state_query::{
-    create_ledger_state_query_client, LedgerStateQueryClient, LedgerStateQueryClientOptions,
+    LedgerStateQueryClient, LedgerStateQueryClientOptions, create_ledger_state_query_client,
 };
 
-pub use mempool_monitoring::{create_mempool_monitoring_client, MempoolMonitoringClient};
+pub use mempool_monitoring::{MempoolMonitoringClient, create_mempool_monitoring_client};
 
 pub use server_health::{
-    ensure_server_health, get_server_health, wait_for_server_ready, EnsureServerHealthOptions,
+    EnsureServerHealthOptions, ensure_server_health, get_server_health, wait_for_server_ready,
 };
 
 pub use transaction_submission::{
-    create_transaction_submission_client, TransactionSubmissionClient,
+    TransactionSubmissionClient, create_transaction_submission_client,
 };
 
 // Re-export commonly used schema types
@@ -231,17 +231,17 @@ pub use schema::{
 /// ```
 pub mod prelude {
     pub use crate::chain_synchronization::{
-        create_chain_synchronization_client, ChainSynchronizationClient,
-        ChainSynchronizationClientOptions, ChainSynchronizationMessageHandlers,
+        ChainSynchronizationClient, ChainSynchronizationClientOptions,
+        ChainSynchronizationMessageHandlers, create_chain_synchronization_client,
     };
     pub use crate::connection::{
-        create_connection_object, create_interaction_context, Connection, ConnectionConfig,
-        InteractionContext, InteractionContextOptions, InteractionType,
+        Connection, ConnectionConfig, InteractionContext, InteractionContextOptions,
+        InteractionType, create_connection_object, create_interaction_context,
     };
     pub use crate::error::{OgmiosError, Result};
-    pub use crate::ledger_state_query::{create_ledger_state_query_client, LedgerStateQueryClient};
+    pub use crate::ledger_state_query::{LedgerStateQueryClient, create_ledger_state_query_client};
     pub use crate::mempool_monitoring::{
-        create_mempool_monitoring_client, MempoolMonitoringClient,
+        MempoolMonitoringClient, create_mempool_monitoring_client,
     };
     pub use crate::schema::{
         Address, Block, BlockHeight, Epoch, Lovelace, Point, Slot, Tip, Transaction, TransactionId,
@@ -249,7 +249,7 @@ pub mod prelude {
     };
     pub use crate::server_health::{ensure_server_health, get_server_health};
     pub use crate::transaction_submission::{
-        create_transaction_submission_client, TransactionSubmissionClient,
+        TransactionSubmissionClient, create_transaction_submission_client,
     };
 }
 
